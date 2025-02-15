@@ -2,7 +2,7 @@
 #define ENEMY_HPP
 
 #include "Entity.hpp"
-
+#include "Player.hpp"
 #include "Pathfinding.hpp"
 #include <iostream>
 
@@ -16,7 +16,7 @@ public:
     void setPath(std::vector<sf::Vector2i> newPath);
     void setTarget(const sf::Vector2i& target);
     void detectPlayer(Grid& grid, const sf::Vector2i& playerPos);
-    void update(float deltaTime, Grid& grid) override;
+    void update(float deltaTime, Grid& grid, sf::Vector2i playerPos) override;
    
    
 private:
@@ -24,10 +24,10 @@ private:
     sf::Vector2i gridPosition;
     std::vector<sf::Vector2i> path;
     int currentIndexPath = 0;
+    sf::Vector2i targetPosition;
 
-    void patrol();
-    void chase(Grid& grid, const sf::Vector2i playerPos);
-    void moveAlongPath(float deltaTime);
+    void chase(Grid& grid, const sf::Vector2i& playerPos, float deltaTime);
+    void patrol(float deltaTime);
 };
 
 #endif // ENEMY_HPP

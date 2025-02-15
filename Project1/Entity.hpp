@@ -12,9 +12,9 @@ public:
 
     Entity(float x, float y, sf::Color color);
     virtual ~Entity() = default;
-    virtual void update(float deltaTime, Grid& grid) = 0;
+    virtual void update(float deltaTime, Grid& grid, sf::Vector2i playerPos) = 0;
 
-    sf::Vector2i getGridPosition() const;
+    virtual sf::Vector2i getGridPosition() const;
 };
 
 #endif // ENTITY_HPP

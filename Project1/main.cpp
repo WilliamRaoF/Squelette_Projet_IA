@@ -32,9 +32,10 @@ int main() {
 
         
         sf::Vector2i playerGridPos = player.getGridPosition();
-        player.update(deltaTime, grid);
+        player.update(deltaTime, grid, playerGridPos);
+
         for (auto& enemy : enemies) {
-            enemy.update(deltaTime, grid);
+            enemy.update(deltaTime, grid, playerGridPos);
         }
 
         window.clear();
