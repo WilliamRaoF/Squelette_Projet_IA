@@ -2,6 +2,7 @@
 #include "Player.hpp"
 #include "Enemy.hpp"
 #include "Grid.hpp"
+#include "Pathfinding.hpp"
 #include <vector>
 
 
@@ -29,6 +30,8 @@ int main() {
                 window.close();
         }
 
+        
+        sf::Vector2i playerGridPos = player.getGridPosition();
         player.update(deltaTime, grid);
         for (auto& enemy : enemies) {
             enemy.update(deltaTime, grid);

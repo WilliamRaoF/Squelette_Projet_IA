@@ -27,4 +27,6 @@ void Player::update(float deltaTime, Grid& grid) {
         isWalkable(newBounds.left + newBounds.width - 1, newBounds.top + newBounds.height - 1)) {
         shape.move(movement);
     }
+   grid.setPlayerPosition(getGridPosition());
 }
+

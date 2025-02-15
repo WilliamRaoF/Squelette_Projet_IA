@@ -4,13 +4,17 @@
 #include <SFML/Graphics.hpp>
 #include "Grid.hpp"
 
+class Grid;
 class Entity {
 public:
     sf::RectangleShape shape;
     sf::Vector2f velocity;
 
     Entity(float x, float y, sf::Color color);
+    virtual ~Entity() = default;
     virtual void update(float deltaTime, Grid& grid) = 0;
+
+    sf::Vector2i getGridPosition() const;
 };
 
 #endif // ENTITY_HPP
