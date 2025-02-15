@@ -5,9 +5,9 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
-const int GRID_WIDTH = 20;
+const int GRID_WIDTH = 25;
 const int GRID_HEIGHT = 15;
-const int CELL_SIZE = 40;
+const int CELL_SIZE = 38;
 
 struct Cell {
     bool walkable;

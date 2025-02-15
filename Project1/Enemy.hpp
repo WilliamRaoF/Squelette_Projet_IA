@@ -11,6 +11,8 @@ public:
     void setPath(std::vector<sf::Vector2i> newPath);
 
     void update(float deltaTime, Grid& grid) override;
+    enum State { PATROL, CHASE, SEARCH };
+    State currentState;
 private:
 
     sf::Vector2i gridPosition;
