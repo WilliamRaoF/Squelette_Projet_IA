@@ -24,7 +24,7 @@ void Enemy::detectPlayer(Grid& grid, const sf::Vector2i& playerPos)
 
     int distance = std::abs(enemyPos.x - playerPos.x) + std::abs(enemyPos.y - playerPos.y);
 
-    if (distance < 4 && !currentState == CHASE) {
+    if (distance < 4 && currentState != CHASE) {
             currentState = CHASE;
             setTarget(playerPos);
             setPath(Pathfinding::findPath(grid, enemyPos, playerPos));
@@ -33,8 +33,6 @@ void Enemy::detectPlayer(Grid& grid, const sf::Vector2i& playerPos)
     else if (distance > 10 && currentState == CHASE) {
         currentState = SEARCH;
         searchTargets = searchPoints(playerPos);
-       
-        
     }
 }
 
@@ -112,7 +110,7 @@ void Enemy::chase(Grid& grid, const sf::Vector2i& playerPos, float deltaTime)
 
 void Enemy::patrol(float deltaTime, Grid& grid)
 {
-    static std::vector<sf::Vector2i> patrolPoints = { {2,2}, {8,2}, {8,8}, {20,13} };
+    static std::vector<sf::Vector2i> patrolPoints = { {2,2}, {8,2}, {8,8}, {12,13} };
 
     if (path.empty()) {
         targetPosition = patrolPoints[currentIndexPath];
@@ -120,8 +118,9 @@ void Enemy::patrol(float deltaTime, Grid& grid)
     }
 
     moveAlongPath(deltaTime, grid);
-
-    if (currentIndexPath >= path.size()) {
+    
+    sf::Vector2i enemyPos = getGridPosition();
+    if (enemyPos == targetPosition) {
         currentIndexPath = (currentIndexPath + 1) % patrolPoints.size();
         targetPosition = patrolPoints[currentIndexPath];
         setPath(Pathfinding::findPath(grid, getGridPosition(), targetPosition));  
@@ -148,8 +147,19 @@ void Enemy::search(float deltaTime, Grid& grid)
     if (currentIndexPath >= path.size()) {
         searchTargets.erase(searchTargets.begin());
         if (!searchTargets.empty()) {
-            setPath(Pathfinding::findPath(grid, getGridPosition(), searchTargets.front()));
+            std::vector<sf::Vector2i> newPath = Pathfinding::findPath(grid, getGridPosition(), searchTargets.front());
+
+            if (!newPath.empty()) {
+                setPath(newPath);
+            }
+            else {
+                searchTargets.clear();
+                return;
+  
+            }
+
         }
     }
+
     moveAlongPath(deltaTime, grid);
 }
