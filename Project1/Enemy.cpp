@@ -39,13 +39,14 @@ void Enemy::detectPlayer(Grid& grid, const sf::Vector2i& playerPos)
     }
 }
 
-void Enemy::update(float deltaTime, Grid& grid, sf::Vector2i playerPos) {
-    //sf::Vector2i playerPos = grid.playerPosition;
+void Enemy::update(float deltaTime, Grid& grid, sf::Vector2i& playerPos) {
+
+    detectPlayer(grid, playerPos);
 
     switch (currentState) {
     case PATROL:
-        patrol(deltaTime);
-        detectPlayer(grid, playerPos);
+       patrol(deltaTime, grid);
+      //  detectPlayer(grid, playerPos);
         break;
         //fonction de patrouille
          //if (/*fonction de détection du player*/) currentState = CHASE;
@@ -73,8 +74,41 @@ void Enemy::update(float deltaTime, Grid& grid, sf::Vector2i playerPos) {
 
 void Enemy::chase(Grid& grid, const sf::Vector2i& playerPos, float deltaTime)
 {
-    if (targetPosition != playerPos) {
-        path = Pathfinding::findPath(grid, getGridPosition(), targetPosition); 
+    std::cout << "Player position chase : x :" << playerPos.x << "y :" << playerPos.y << std::endl;
+   if (path.empty() || targetPosition != playerPos) {
+        targetPosition = playerPos;
+        path = Pathfinding::findPath(grid, getGridPosition(), playerPos);
+        currentIndexPath = 0;
+    }
+    
+
+    if (currentIndexPath < path.size()) {
+        sf::Vector2f targetPos(path[currentIndexPath].x * CELL_SIZE, path[currentIndexPath].y * CELL_SIZE);
+        sf::Vector2f direction = targetPos - shape.getPosition();
+        float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+
+        if (length > 0.1f) {
+            direction /= length;
+            sf::Vector2f newPosition = shape.getPosition() + (direction * SPEED * deltaTime);
+
+            int gridX = newPosition.x / CELL_SIZE;
+            int gridY = newPosition.y / CELL_SIZE;
+
+            if (grid.getCell(gridY, gridX).walkable) {
+                shape.setPosition(newPosition);
+            }
+        }
+        else {
+            shape.setPosition(targetPos);
+            currentIndexPath++;
+        }
+    }
+}
+
+void Enemy::patrol(float deltaTime, Grid& grid)
+{
+    if (path.empty()) {
+        path = { {2, 2}, {8, 2}, {8, 8}, {2, 8} };  
         currentIndexPath = 0;
     }
 
@@ -85,34 +119,17 @@ void Enemy::chase(Grid& grid, const sf::Vector2i& playerPos, float deltaTime)
         float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
         if (length > 0.1f) {
             direction /= length;
-            shape.move(direction * SPEED * deltaTime); 
-        }
-        else {
-            currentIndexPath++; 
-        }
-    }
-}
-
-void Enemy::patrol(float deltaTime)
-{
-    if (path.empty()) {
-        path = { {2, 2}, {8, 2}, {8, 8}, {2, 8} };  
-        currentIndexPath = 0;
-    }
-    if (currentIndexPath < path.size()) {
-        sf::Vector2f targetPosition(path[currentIndexPath].x * CELL_SIZE, path[currentIndexPath].y * CELL_SIZE);
-        sf::Vector2f direction = targetPosition - shape.getPosition();
-
-        float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-        if (length > 0.1f) {
-            direction /= length;
             shape.move(direction * SPEED * deltaTime);
         }
         else {
+            shape.setPosition(targetPos); 
             currentIndexPath++;
         }
     }
     else {
-        currentIndexPath = 0;
+ 
+        currentIndexPath = (currentIndexPath + 1) % 4;
+        targetPosition = path[currentIndexPath];
+        path = Pathfinding::findPath(grid, getGridPosition(), targetPosition);
     }
 }

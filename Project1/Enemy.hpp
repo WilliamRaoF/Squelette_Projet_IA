@@ -16,7 +16,7 @@ public:
     void setPath(std::vector<sf::Vector2i> newPath);
     void setTarget(const sf::Vector2i& target);
     void detectPlayer(Grid& grid, const sf::Vector2i& playerPos);
-    void update(float deltaTime, Grid& grid, sf::Vector2i playerPos) override;
+    void update(float deltaTime, Grid& grid, sf::Vector2i& playerPos) override;
    
    
 private:
@@ -27,7 +27,7 @@ private:
     sf::Vector2i targetPosition;
 
     void chase(Grid& grid, const sf::Vector2i& playerPos, float deltaTime);
-    void patrol(float deltaTime);
+    void patrol(float deltaTime, Grid& grid);
 };
 
 #endif // ENEMY_HPP

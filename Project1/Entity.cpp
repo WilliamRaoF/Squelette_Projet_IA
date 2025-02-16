@@ -8,7 +8,10 @@ Entity::Entity(float x, float y, sf::Color color) {
 
 sf::Vector2i Entity::getGridPosition() const
 {
-    return sf::Vector2i(
-        static_cast<int>(shape.getPosition().x / CELL_SIZE),
-            static_cast<int>(shape.getPosition().y / CELL_SIZE) );
+    int gridX = static_cast<int>(std::round(shape.getPosition().x / CELL_SIZE));
+    int gridY = static_cast<int>(std::round(shape.getPosition().y / CELL_SIZE));
+
+    gridX = std::max(0, std::min(gridX, GRID_WIDTH - 1));
+    gridY = std::max(0, std::min(gridY, GRID_HEIGHT - 1));
+    return sf::Vector2i(gridX, gridY);
 }

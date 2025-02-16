@@ -33,7 +33,7 @@ int main() {
         
         sf::Vector2i playerGridPos = player.getGridPosition();
         player.update(deltaTime, grid, playerGridPos);
-
+        std::cout << "Player position : x :" << player.getGridPosition().x << "y :" << player.getGridPosition().y << std::endl;
         for (auto& enemy : enemies) {
             enemy.update(deltaTime, grid, playerGridPos);
         }
