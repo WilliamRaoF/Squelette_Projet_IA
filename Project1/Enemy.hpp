@@ -17,17 +17,19 @@ public:
     void setTarget(const sf::Vector2i& target);
     void detectPlayer(Grid& grid, const sf::Vector2i& playerPos);
     void update(float deltaTime, Grid& grid, sf::Vector2i& playerPos) override;
-   
+    void moveAlongPath(float deltaTime, Grid& grid);
    
 private:
     State currentState;
     sf::Vector2i gridPosition;
     std::vector<sf::Vector2i> path;
+    sf::Vector2i lastKnownPlayerPos;
     int currentIndexPath = 0;
     sf::Vector2i targetPosition;
 
     void chase(Grid& grid, const sf::Vector2i& playerPos, float deltaTime);
     void patrol(float deltaTime, Grid& grid);
+    void search(float deltaTime, Grid& grid);
 };
 
 #endif // ENEMY_HPP
