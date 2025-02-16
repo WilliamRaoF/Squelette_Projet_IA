@@ -23,12 +23,16 @@ private:
     State currentState;
     sf::Vector2i gridPosition;
     std::vector<sf::Vector2i> path;
+    std::vector<sf::Vector2i> searchTargets;
+
+
     sf::Vector2i lastKnownPlayerPos;
     int currentIndexPath = 0;
     sf::Vector2i targetPosition;
 
     void chase(Grid& grid, const sf::Vector2i& playerPos, float deltaTime);
     void patrol(float deltaTime, Grid& grid);
+    std::vector<sf::Vector2i> searchPoints(sf::Vector2i lastKnownPos);
     void search(float deltaTime, Grid& grid);
 };
 

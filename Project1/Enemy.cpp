@@ -28,12 +28,12 @@ void Enemy::detectPlayer(Grid& grid, const sf::Vector2i& playerPos)
             currentState = CHASE;
             setTarget(playerPos);
             setPath(Pathfinding::findPath(grid, enemyPos, playerPos));
-            shape.setFillColor(sf::Color::Magenta);
 
     }
     else if (distance > 10 && currentState == CHASE) {
         currentState = SEARCH;
-        shape.setFillColor(sf::Color::Red);
+        searchTargets = searchPoints(playerPos);
+       
         
     }
 }
@@ -44,15 +44,16 @@ void Enemy::update(float deltaTime, Grid& grid, sf::Vector2i& playerPos) {
 
     switch (currentState) {
     case PATROL:
+        shape.setFillColor(sf::Color::Red);
         patrol(deltaTime, grid);
-        //  detectPlayer(grid, playerPos);
+  
         break;
         //fonction de patrouille
          //if (/*fonction de détection du player*/) currentState = CHASE;
          //break;
 
     case CHASE:
-
+        shape.setFillColor(sf::Color::Magenta);
         chase(grid, playerPos, deltaTime);
         //fonction de chase avec le pathfinding
          //if (!/*fonction de détection du player*/) {
@@ -61,6 +62,8 @@ void Enemy::update(float deltaTime, Grid& grid, sf::Vector2i& playerPos) {
         break;
 
     case SEARCH:
+        shape.setFillColor(sf::Color::Green);
+        search(deltaTime, grid);
         break;
 
     case PROTECT:
@@ -125,7 +128,28 @@ void Enemy::patrol(float deltaTime, Grid& grid)
     }
 }
 
+std::vector<sf::Vector2i> Enemy::searchPoints(sf::Vector2i lastKnownPos)
+{
+    std::vector<sf::Vector2i> points;
+    points.push_back(lastKnownPos);
+    points.push_back({ lastKnownPos.x + 2, lastKnownPos.y });
+    points.push_back({ lastKnownPos.x - 2, lastKnownPos.y });
+    points.push_back({ lastKnownPos.x, lastKnownPos.y + 2 });
+    points.push_back({ lastKnownPos.x, lastKnownPos.y - 2 });
+    return points;
+}
+
 void Enemy::search(float deltaTime, Grid& grid)
 {
-
+    if (searchTargets.empty()) {
+        currentState = PATROL;
+        return;
+    }
+    if (currentIndexPath >= path.size()) {
+        searchTargets.erase(searchTargets.begin());
+        if (!searchTargets.empty()) {
+            setPath(Pathfinding::findPath(grid, getGridPosition(), searchTargets.front()));
+        }
+    }
+    moveAlongPath(deltaTime, grid);
 }
