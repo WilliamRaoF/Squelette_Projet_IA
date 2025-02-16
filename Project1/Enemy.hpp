@@ -2,11 +2,30 @@
 #define ENEMY_HPP
 
 #include "Entity.hpp"
+#include "Player.hpp"
+
+using namespace std;
+using namespace sf;
+
 
 class Enemy : public Entity {
 public:
+    Player& player;
     static constexpr float SPEED = 100.0f;
-    Enemy(float x, float y);
+    float detectionRadius;
+    Vector2f position;
+    Vector2f lastPlayerPos;
+    enum State { PATROL, CHASE, SEARCH };
+    State currentState;
+
+
+
+    Enemy(Player& p ,sf::Vector2f pos, float radius);
+
+    bool detectPlayer(sf::Vector2f playerPos);
+    void patrol();
+    void chase(sf::Vector2f playerPos);
+    void search(sf::Vector2f lastPlayerPos, float deltaTime);
     void update(float deltaTime, Grid& grid) override;
 };
 

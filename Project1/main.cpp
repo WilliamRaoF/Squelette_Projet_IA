@@ -12,8 +12,8 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Jeu SFML - IA Ennemis");
     window.setFramerateLimit(60);
 
-    Player player(200, 400);
-    std::vector<Enemy> enemies = { Enemy(100, 100), Enemy(700, 100) };
+    Player player({200 , 400});
+    std::vector<Enemy> enemies = { Enemy(player ,{100,100}, 50.0f), Enemy(player, {700, 100}, 10.0f) };
     Grid grid;
     grid.loadFromFile("map.txt");
 
@@ -30,9 +30,7 @@ int main() {
         }
 
         player.update(deltaTime, grid);
-        for (auto& enemy : enemies) {
-            enemy.update(deltaTime, grid);
-        }
+        enemies[0].update(deltaTime, grid);
 
         window.clear();
         grid.draw(window);
