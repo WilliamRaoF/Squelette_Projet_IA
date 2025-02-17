@@ -160,7 +160,6 @@ void Enemy::search(float deltaTime, Grid& grid)
                 return;
   
             }
-
         }
     }
 
