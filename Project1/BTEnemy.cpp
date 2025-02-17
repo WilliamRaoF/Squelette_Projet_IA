@@ -5,13 +5,14 @@ BTEnemy::BTEnemy(float x, float y) : Entity(x, y, sf::Color::Cyan)
 	//setup tree
 
 	behavior.getBlackboard()->setValue("isPlayerDetected", false);
+	behavior.getBlackboard()->setValue("GoTo", sf::Vector2f{0, 0});
 
 	auto plrDetect = std::make_unique<SequenceNode>();
 	auto patrolling = std::make_unique<SequenceNode>();
 
 	plrDetect->addChild(std::make_unique<ConditionNode>(behavior.getBlackboard(), "isPlayerDetected", true));
-	plrDetect->addChild(std::make_unique<ChaseNode>());
-	patrolling->addChild(std::make_unique<PatrolNode>());
+	plrDetect->addChild(std::make_unique<ChaseNode>(behavior.getBlackboard()));
+	patrolling->addChild(std::make_unique<PatrolNode>(behavior.getBlackboard()));
 
 	behavior.addChildToRoot(std::move(plrDetect));
 	behavior.addChildToRoot(std::move(patrolling));
@@ -32,6 +33,7 @@ void BTEnemy::update(float deltaTime, Grid& grid, Player& player)
 	if (distance <= 150.f)
 	{
 		behavior.getBlackboard()->setValue("isPlayerDetected", true);
+
 		behavior.getBlackboard()->setValue("GoTo", playerPos);
 	}
 	else

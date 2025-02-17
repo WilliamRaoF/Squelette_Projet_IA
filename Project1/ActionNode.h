@@ -21,13 +21,13 @@ protected:
 
 class PatrolNode : public ActionNode {
 public:
-    PatrolNode() { m_actionName = "Patrolling"; }
+    PatrolNode(const std::shared_ptr<Blackboard>& blackboard) : ActionNode("Patrolling", blackboard) {}
     //NodeState execute() override;
 };
 
 class ChaseNode : public ActionNode {
 public:
-    ChaseNode() { m_actionName = "Chase"; }
+    ChaseNode(const std::shared_ptr<Blackboard>& blackboard) : ActionNode("Chase", blackboard) {}
     NodeState execute() override;
 };
 

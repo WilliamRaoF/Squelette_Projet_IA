@@ -20,6 +20,7 @@ public:
 	ValueType getValue(const std::string& key)
 	{
         try {
+
             auto& value = m_data.at(key);
 
             if (value.type() != typeid(ValueType)) {
