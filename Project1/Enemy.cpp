@@ -5,24 +5,28 @@ Enemy::Enemy(float x, float y, int hp) : Entity(x, y, sf::Color::Red, hp) {
 	pos = { x,y };
     shape.setPosition(pos);
     //shape.setFillColor(sf::Color::Red);
-    detectionRadius = 50;
+    detectionRadius = 100;
     currentState = PATROL;
 }
 
 void Enemy::update(float deltaTime, Grid& grid, std::vector<Entity*> players, sf::Vector2f playerPos) {
-    currentState = PATROL;
     switch (currentState) {
     case PATROL: {
+        cout << "dedans V2";
         patrol();
-        if (detectPlayer(players[0]->pos))  currentState = CHASE;
+        if (detectPlayer(players[0]->pos)) {
+            cout << "Found"; 
+            currentState = CHASE;
+        }
         break;
     }
 
     case CHASE: {
+        
         chase(players[0]->pos);
         if (!detectPlayer(players[0]->pos)) {
-            lastPlayerPosition = players[0]->pos;
-            currentState = SEARCH;
+            
+            currentState = PATROL;
         }
         break;
     }
@@ -82,7 +86,7 @@ void Enemy::patrol() {
         direction /= distance;
         pos += direction * 0.2f;
     }
-    //cout << pos.x << "  " << pos.y << endl;
+    
     shape.setPosition(pos);
 }
 
@@ -95,6 +99,7 @@ void Enemy::chase(Vector2f playerPos) {
         pos += direction * 2.0f;
     }
 
+    shape.setPosition(pos);
 }
 
 void Enemy::search(sf::Vector2f lastPlayerPos, float deltaTime) {
