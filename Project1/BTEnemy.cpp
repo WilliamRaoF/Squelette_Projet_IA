@@ -32,6 +32,7 @@ void BTEnemy::update(float deltaTime, Grid& grid, Player& player)
 	if (distance <= 150.f)
 	{
 		behavior.getBlackboard()->setValue("isPlayerDetected", true);
+		behavior.getBlackboard()->setValue("GoTo", playerPos);
 	}
 	else
 	{
