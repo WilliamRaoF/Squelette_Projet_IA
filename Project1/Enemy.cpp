@@ -3,12 +3,13 @@
 #include <cstdlib>
 #include <ctime>
 
+
 sf::Clock timetest;
 int randLimit(int min, int max) {
     return min + rand() % (max - min + 1);
 }
 
-Enemy::Enemy(Player& p, sf::Vector2f pos, float radiusDetect) : Entity(pos, sf::Color::Red), player(p), detectionRadius(radiusDetect) {
+Enemy::Enemy(Player& p, sf::Vector2f pos, float radiusDetect, int hp) : Entity(pos, sf::Color::Red, hp), player(p), detectionRadius(radiusDetect) {
     detectionRadius = 200.0f;
     currentState = PATROL;
 }
@@ -99,7 +100,7 @@ void Enemy::search(sf::Vector2f lastPlayerPos, float deltaTime) {
     shape.setPosition(position);
 }
 
-void Enemy::update(float deltaTime, Grid& grid) {
+void Enemy::update(float deltaTime, Grid& grid, std::vector<Entity*> players) {
     switch (currentState) {
     case PATROL:
         patrol();
@@ -118,4 +119,6 @@ void Enemy::update(float deltaTime, Grid& grid) {
         search(player.getpos(), deltaTime);
         break;
     }
-}
+
+
+

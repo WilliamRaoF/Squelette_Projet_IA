@@ -5,6 +5,7 @@
 #include <vector>
 
 
+
 const int WINDOW_WIDTH = 1480;
 const int WINDOW_HEIGHT = 880;
 
@@ -12,8 +13,11 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Jeu SFML - IA Ennemis");
     window.setFramerateLimit(60);
 
-    Player player({200 , 400});
-    std::vector<Enemy> enemies = { Enemy(player ,{100,100}, 200.0f), Enemy(player, {700, 100}, 10.0f) };
+    Player player(400, 400, 10);
+    std::vector<Entity*> enemies;
+	enemies.push_back(new Enemy(100, 100, 10));
+	enemies.push_back(new Enemy(700, 100, 100));
+
     Grid grid;
     grid.loadFromFile("map.txt");
 
@@ -29,16 +33,22 @@ int main() {
                 window.close();
         }
 
-        player.update(deltaTime, grid);
+
         enemies[0].update(deltaTime, grid);
+
+        player.update(deltaTime, grid, enemies);
+
+
 
         window.clear();
         grid.draw(window);
         window.draw(player.shape);
-        for (const auto& enemy : enemies)
-            window.draw(enemy.shape);
+        for (const auto& enemy : enemies) {
+            if (enemy->isAlive()) {
+                window.draw(enemy->shape);
+            }
+        }
         window.display();
     }
     return 0;
 }
-

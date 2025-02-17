@@ -26,7 +26,7 @@ public:
     void patrol();
     void chase(sf::Vector2f playerPos);
     void search(sf::Vector2f lastPlayerPos, float deltaTime);
-    void update(float deltaTime, Grid& grid) override;
+    void update(float deltaTime, Grid& grid, std::vector<Entity*> players) override;
 };
 
 #endif // ENEMY_HPP
