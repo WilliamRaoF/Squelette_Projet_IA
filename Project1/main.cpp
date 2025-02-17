@@ -1,9 +1,11 @@
 #include <SFML/Graphics.hpp>
 #include "Player.hpp"
+#include "PathFinding.hpp"
 #include "Enemy.hpp"
 #include "Grid.hpp"
 #include <vector>
-
+using namespace std;
+using namespace sf;
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 
@@ -12,13 +14,22 @@ int main() {
     window.setFramerateLimit(60);
 
     Player player(400, 400, 10);
+    std::vector<Entity*> players;
+    players.push_back(&player);
     std::vector<Entity*> enemies;
-	enemies.push_back(new Enemy(100, 100, 10));
-	enemies.push_back(new Enemy(700, 100, 100));
+    Enemy enemy1(375,380,20);
+    //Enemy enemy2(500,100,20);
+    //Enemy enemy3(300,100,20);
+    enemies.push_back(&enemy1);/*
+    enemies.push_back(&enemy2);
+    enemies.push_back(&enemy3);*/
     Grid grid;
     grid.loadFromFile("map.txt");
-
+    Pathfinding path;
     sf::Clock clock;
+    vector<Vector2f> pathList;
+    Vector2f start = enemy1.pos;
+    Vector2f target = player.pos;
 
     while (window.isOpen()) {
         sf::Time dt = clock.restart();
@@ -30,13 +41,14 @@ int main() {
                 window.close();
         }
 
-        player.update(deltaTime, grid, enemies);
+        player.update(deltaTime, grid, enemies, player.pos);
         for (auto& enemy : enemies) {
-            //enemy->update(deltaTime, grid);
+            enemy->update(deltaTime, grid, players, player.pos);
         }
 
         window.clear();
         grid.draw(window);
+        window.draw(enemy1.circle);
         window.draw(player.shape);
         for (const auto& enemy : enemies) {
             if (enemy->isAlive()) {

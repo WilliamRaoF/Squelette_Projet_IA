@@ -3,9 +3,11 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <iostream>
 #include "Enemy.hpp"
-Player::Player(float x, float y, int hp) : Entity(x, y, sf::Color::Blue, hp), attackTimer(0.f) {}
+Player::Player(float x, float y, int hp) : Entity(x, y, sf::Color::Blue, hp), attackTimer(0.f) {
+    pos = { x,y };
+}
 
-void Player::update(float deltaTime, Grid& grid, std::vector<Entity*> enemies) {
+void Player::update(float deltaTime, Grid& grid, std::vector<Entity*> enemies, sf::Vector2f playerPos) {
     sf::Vector2f movement(0.f, 0.f);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) movement.y -= SPEED * deltaTime;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) movement.y += SPEED * deltaTime;
@@ -26,6 +28,7 @@ void Player::update(float deltaTime, Grid& grid, std::vector<Entity*> enemies) {
         isWalkable(newBounds.left - 2, newBounds.top + newBounds.height + 2) &&
         isWalkable(newBounds.left + newBounds.width + 2, newBounds.top + newBounds.height + 2)) {
         shape.move(movement);
+        pos = shape.getPosition();
     }
 
     attackTimer += deltaTime;
