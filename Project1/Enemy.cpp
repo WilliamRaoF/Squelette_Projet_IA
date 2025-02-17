@@ -8,13 +8,11 @@ Enemy::Enemy(Player& p, sf::Vector2f pos, float radiusDetect) : Entity(pos, sf::
 
 bool Enemy::detectPlayer(sf::Vector2f playerPos)
 {
-    // Calcul de la distance entre l'ennemi et le joueur
     float distance = std::sqrt(std::pow(player.getpos().x - position.x, 2) + std::pow(player.getpos().y - position.y, 2));
 
-    // Affichage de la distance et du rayon de détection pour le débogage
     std::cout << "Distance to player: " << distance << " | Detection Radius: " << detectionRadius << std::endl;
 
-    return (distance < detectionRadius);  // Si la distance est inférieure au rayon de détection, retour vrai
+    return (distance < detectionRadius);  
 }
 
 
@@ -22,7 +20,7 @@ bool Enemy::detectPlayer(sf::Vector2f playerPos)
 void Enemy::patrol()
 {
     static int currentWaypoint = 0;
-    static sf::Vector2f waypoints[4] = { sf::Vector2f(100, 300), sf::Vector2f(500, 100), sf::Vector2f(100, 300), sf::Vector2f(500, 300) };
+    static sf::Vector2f waypoints[4] = { sf::Vector2f(100, 300), sf::Vector2f(500, 300), sf::Vector2f(500, 800), sf::Vector2f(100, 800) };
     sf::Vector2f target = waypoints[currentWaypoint];
     sf::Vector2f direction = target - position;
     float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
@@ -44,7 +42,7 @@ void Enemy::chase(sf::Vector2f playerPos)
 
     if (distance > 0) {
         direction /= distance;
-        position += direction * 0.2f;
+        position += direction * 0.5f;
     }
 
     shape.setPosition(position);
@@ -95,6 +93,7 @@ void Enemy::update(float deltaTime, Grid& grid) {
 
     case SEARCH:
         search(lastPlayerPos, deltaTime);
+        currentState = PATROL;
         break;
     }
 }

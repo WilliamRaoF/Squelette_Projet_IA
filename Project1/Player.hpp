@@ -11,7 +11,7 @@ public:
     Player(sf::Vector2f pos);
 
     void update(float deltaTime, Grid& grid) override;
-    sf::Vector2f getpos() const { return playerPos; }
+    sf::Vector2f getpos() { return shape.getPosition(); }
 };
 
 #endif // PLAYER_HPP
