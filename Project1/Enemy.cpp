@@ -115,6 +115,7 @@ void Enemy::patrol(float deltaTime, Grid& grid)
     if (path.empty()) {
         targetPosition = patrolPoints[currentIndexPath];
         setPath(Pathfinding::findPath(grid, getGridPosition(), targetPosition));  
+        currentIndexPath = 0;
     }
 
     moveAlongPath(deltaTime, grid);
@@ -142,6 +143,8 @@ void Enemy::search(float deltaTime, Grid& grid)
 {
     if (searchTargets.empty()) {
         currentState = PATROL;
+        currentIndexPath = 0;
+        path.clear();
         return;
     }
     if (currentIndexPath >= path.size()) {
