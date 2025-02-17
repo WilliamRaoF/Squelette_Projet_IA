@@ -20,7 +20,7 @@ public:
 
 
 
-    Enemy(Player& p ,sf::Vector2f pos, float radius);
+    Enemy(Player& p ,sf::Vector2f pos, float radius, int hp);
 
     bool detectPlayer(sf::Vector2f playerPos);
     void patrol();

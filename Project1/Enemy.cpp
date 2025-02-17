@@ -100,6 +100,7 @@ void Enemy::search(sf::Vector2f lastPlayerPos, float deltaTime) {
     shape.setPosition(position);
 }
 
+
 void Enemy::update(float deltaTime, Grid& grid, std::vector<Entity*> players) {
     switch (currentState) {
     case PATROL:
@@ -119,6 +120,7 @@ void Enemy::update(float deltaTime, Grid& grid, std::vector<Entity*> players) {
         search(player.getpos(), deltaTime);
         break;
     }
+}
 
 
 
