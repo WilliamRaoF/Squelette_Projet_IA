@@ -17,9 +17,7 @@ Enemy::Enemy(Player& p, sf::Vector2f pos, float radiusDetect, int hp) : Entity(p
 bool Enemy::detectPlayer(sf::Vector2f playerPos)
 {
     float distance = std::sqrt(std::pow(player.getpos().x - position.x, 2) + std::pow(player.getpos().y - position.y, 2));
-
     //std::cout << "Distance to player: " << distance << " | Detection Radius: " << detectionRadius << std::endl;
-
     return (distance < detectionRadius);  
 }
 
@@ -31,10 +29,10 @@ void Enemy::patrol()
     std::srand(static_cast<unsigned int>(std::time(0)));
     static int currentWaypoint = 0;
     sf::Vector2f waypoints[4] = { 
-        sf::Vector2f(randLimit(0, 1480), randLimit(0, 880)), 
-        sf::Vector2f(randLimit(0, 1480), randLimit(0, 880)), 
-        sf::Vector2f(randLimit(0, 1480), randLimit(0, 880)), 
-        sf::Vector2f(randLimit(0, 1480), randLimit(0, 880)) 
+        sf::Vector2f(randLimit(0, 1440), randLimit(0, 840)), 
+        sf::Vector2f(randLimit(0, 1440), randLimit(0, 840)),
+        sf::Vector2f(randLimit(0, 1440), randLimit(0, 840)),
+        sf::Vector2f(randLimit(0, 1440), randLimit(0, 840))
     };
     sf::Vector2f target = waypoints[currentWaypoint];
     sf::Vector2f direction = target - position;

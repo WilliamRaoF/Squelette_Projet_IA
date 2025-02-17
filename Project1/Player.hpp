@@ -2,6 +2,9 @@
 #define PLAYER_HPP
 
 #include "Entity.hpp"
+#include <SFML/Window/Keyboard.hpp>
+#include <iostream>
+
 
 
 class Player : public Entity {
