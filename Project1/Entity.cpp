@@ -17,5 +17,4 @@ bool Entity::isAlive() const
 
 void Entity::takeDamage(int damage) {
     health -= damage;
-
 }

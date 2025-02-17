@@ -1,4 +1,4 @@
-#include "Enemy.hpp"
+#include "EnemyFSM.hpp"
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
@@ -18,7 +18,7 @@ bool Enemy::detectPlayer(sf::Vector2f playerPos)
 {
     float distance = std::sqrt(std::pow(player.getpos().x - position.x, 2) + std::pow(player.getpos().y - position.y, 2));
 
-    std::cout << "Distance to player: " << distance << " | Detection Radius: " << detectionRadius << std::endl;
+    //std::cout << "Distance to player: " << distance << " | Detection Radius: " << detectionRadius << std::endl;
 
     return (distance < detectionRadius);  
 }

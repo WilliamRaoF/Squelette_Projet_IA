@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "Player.hpp"
-#include "Enemy.hpp"
+#include "EnemyFSM.hpp"
 #include "Grid.hpp"
 #include <vector>
 
@@ -17,7 +17,7 @@ int main() {
     std::vector<Entity*> players;
     players.push_back(new Player({ 400,400 }, 10));
     std::vector<Entity*> enemies;
-    enemies.push_back(new Enemy(player, { 100, 100 },50.0f, 10));
+    enemies.push_back(new Enemy(player, { 100, 100 },50.0f, 100));
     enemies.push_back(new Enemy(player ,{ 700, 100 },50.0f, 100));
 
     Grid grid;
@@ -40,15 +40,13 @@ int main() {
 
         player.update(deltaTime, grid, enemies);
 
-
-
         window.clear();
         grid.draw(window);
         window.draw(player.shape);
         for (const auto& enemy : enemies) {
-            if (enemy->isAlive()) {
+            //if (enemy->isAlive()) {
                 window.draw(enemy->shape);
-            }
+            //}
         }
         window.display();
     }
