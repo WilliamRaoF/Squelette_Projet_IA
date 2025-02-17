@@ -17,8 +17,8 @@ int main() {
     std::vector<Entity*> players;
     players.push_back(new Player({ 400,400 }, 10));
     std::vector<Entity*> enemies;
-    enemies.push_back(new Enemy(player, { 100, 100 },50.0f, 100));
-    enemies.push_back(new Enemy(player ,{ 700, 100 },50.0f, 100));
+    enemies.push_back(new EnemyFSM(player, { 100, 100 },50.0f, 100));
+    enemies.push_back(new EnemyFSM(player ,{ 700, 100 },50.0f, 100));
 
     Grid grid;
     grid.loadFromFile("map.txt");
