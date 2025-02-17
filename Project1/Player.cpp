@@ -5,6 +5,7 @@
 #include "Enemy.hpp"
 Player::Player(float x, float y, int hp) : Entity(x, y, sf::Color::Blue, hp), attackTimer(0.f) {
     pos = { x,y };
+    shape.setSize({ 20,20 });
 }
 
 void Player::update(float deltaTime, Grid& grid, std::vector<Entity*> enemies, sf::Vector2f playerPos) {

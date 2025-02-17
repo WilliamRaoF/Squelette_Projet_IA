@@ -5,8 +5,8 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
-const int GRID_WIDTH = 20;
-const int GRID_HEIGHT = 15;
+const int GRID_WIDTH = 70;
+const int GRID_HEIGHT = 25;
 const int CELL_SIZE = 40;
 
 struct Cell {

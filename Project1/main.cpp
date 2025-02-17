@@ -14,6 +14,7 @@ int main() {
     window.setFramerateLimit(60);
 
     Player player(400, 400, 10);
+    sf::View view(player.shape.getPosition(), sf::Vector2f(640, 480));
     std::vector<Entity*> players;
     players.push_back(&player);
     std::vector<Entity*> enemies;
@@ -42,6 +43,8 @@ int main() {
         }
 
         player.update(deltaTime, grid, enemies, player.pos);
+        view.setCenter(player.shape.getPosition());
+        window.setView(view);
         for (auto& enemy : enemies) {
             enemy->update(deltaTime, grid, players, player.pos);
         }
