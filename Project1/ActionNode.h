@@ -21,6 +21,7 @@ protected:
 
 class PatrolNode : public ActionNode {
 public:
+    int stopTime = 1;
     PatrolNode() : ActionNode("Patrolling") {}
     NodeState execute(Grid & grid, std::shared_ptr<Blackboard> blackboard, std::shared_ptr<Entity> entity) override;
 };
@@ -33,6 +34,8 @@ public:
 
 class SearchNode : public ActionNode {
 public:
+    int stopTime = 3;
+
     SearchNode() : ActionNode("Search") {}
     NodeState execute(Grid& grid, std::shared_ptr<Blackboard> blackboard, std::shared_ptr<Entity> entity) override;
 };

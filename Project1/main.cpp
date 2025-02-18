@@ -6,12 +6,15 @@
 #include "Grid.hpp"
 
 #include <vector>
+#include <ctime>
 
 
 const int WINDOW_WIDTH = 1480;
 const int WINDOW_HEIGHT = 880;
 
 int main() {
+    srand(time(NULL));
+
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Jeu SFML - IA Ennemis");
     window.setFramerateLimit(60);
 

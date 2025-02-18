@@ -18,6 +18,7 @@ NodeState PatrolNode::execute(Grid& grid, std::shared_ptr<Blackboard> blackboard
     static float distance = 0.f;
     static sf::Vector2f goTo = { -1, -1 };
     static int cooldown = 0;
+    static int cooldownWhenArrived = 0;
 
     entity->shape.setFillColor(sf::Color::Cyan);
 
@@ -48,9 +49,17 @@ NodeState PatrolNode::execute(Grid& grid, std::shared_ptr<Blackboard> blackboard
     }
     else
     {
-        std::cout << "INVALID PATH\n";
-        goTo = sf::Vector2f{ -1.f, -1.f };
-        return NodeState::FAILURE;
+        entity->velocity = { 0.f, 0.f };
+
+        if (cooldownWhenArrived > stopTime * 60)
+        {
+            cooldown = 0;
+            cooldownWhenArrived = 0;
+            goTo = { -1.f, -1.f };
+            return NodeState::FAILURE;
+        }
+
+        cooldownWhenArrived++;
     }
 
     distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
@@ -61,10 +70,17 @@ NodeState PatrolNode::execute(Grid& grid, std::shared_ptr<Blackboard> blackboard
     }
     else
     {
-        goTo = sf::Vector2f{ -1.f, -1.f };
-    }
+        entity->velocity = { 0.f, 0.f };
 
-    cooldown++;
+        if (cooldownWhenArrived > stopTime * 60)
+        {
+            cooldown = 0;
+            cooldownWhenArrived = 0;
+            goTo = { -1.f, -1.f };
+        }
+
+        cooldownWhenArrived++;
+    }
     return NodeState::SUCCESS;
 }
 
@@ -93,7 +109,7 @@ NodeState ChaseNode::execute(Grid& grid, std::shared_ptr<Blackboard> blackboard,
     }
     else
     {
-        std::cout << "INVALID PATH\n";
+        //std::cout << "INVALID PATH\n";
         //return NodeState::FAILURE;
     }
 
@@ -132,9 +148,16 @@ NodeState SearchNode::execute(Grid& grid, std::shared_ptr<Blackboard> blackboard
     }
     else
     {
-        std::cout << "INVALID PATH\n";
-        blackboard->setValue("isSearching", false);
-        return NodeState::FAILURE;
+        entity->velocity = { 0.f, 0.f };
+
+        if (cooldown > stopTime * 60)
+        {
+            cooldown = 0;
+            blackboard->setValue("isSearching", false);
+            return NodeState::FAILURE;
+        }
+
+        cooldown++;
     }
 
     distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
@@ -147,7 +170,7 @@ NodeState SearchNode::execute(Grid& grid, std::shared_ptr<Blackboard> blackboard
     {
         entity->velocity = { 0.f, 0.f };
 
-        if (cooldown > 10 * 60)
+        if (cooldown > 25 * 60)
         {
             cooldown = 0;
             blackboard->setValue("isSearching", false);
@@ -157,6 +180,5 @@ NodeState SearchNode::execute(Grid& grid, std::shared_ptr<Blackboard> blackboard
         cooldown++;
     }
 
-    cooldown++;
     return NodeState::SUCCESS;
 }
