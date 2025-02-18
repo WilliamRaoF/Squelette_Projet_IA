@@ -136,8 +136,8 @@ void Enemy::patrol() {
         pos += direction * 0.2f;
         e_direction = direction;
     }
+    shape.move(direction*SPEED);
     
-    shape.setPosition(pos);
 }
 
 void Enemy::chase(Vector2f playerPos) {

@@ -38,7 +38,7 @@ public:
     void chase(sf::Vector2f playerPos);
     void search(sf::Vector2f lastPlayerPos, float deltaTime);
 
-    static constexpr float SPEED = 100.0f;
+    static constexpr float SPEED = 2.0f;
     Enemy(float x, float y, int hp);
     void rayCasting(Grid& grid, RenderWindow& window) override;
     void update(float deltaTime, Grid& grid, std::vector<Entity*> players, sf::Vector2f playerPos) override;

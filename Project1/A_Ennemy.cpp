@@ -117,7 +117,7 @@ void A_Ennemy::Path(Vector2i start, Vector2i end, Pathfinding& path, Grid& grid)
                 reversePath = false;
             }
 
-            // Modifier l'index en fonction du sens du trajet
+            
             if (reversePath) {
                 currentPathIndex--;
             }
@@ -130,6 +130,7 @@ void A_Ennemy::Path(Vector2i start, Vector2i end, Pathfinding& path, Grid& grid)
             pos += direction * 2.0f;
         }
     }
+    shape.setPosition(pos);
 }
 
 
