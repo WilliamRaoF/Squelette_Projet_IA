@@ -19,13 +19,21 @@ int main() {
     grid.loadFromFile("map.txt");
 
     Player player(200, 400);
+    player.shape.setOrigin(player.shape.getSize() / 2.f);
 
     std::vector<Enemy> enemies = { Enemy(100, 100), Enemy(700, 100) };
 
+    //*BEHAVIOR TREE ENEMY*\\ 
     std::vector<std::shared_ptr<BTEnemy>> btenemies;
     auto btEnemy = std::make_shared<BTEnemy>(200, 200);
     btEnemy->initBTree(grid);
     btenemies.push_back(btEnemy);
+
+    sf::CircleShape radius(btEnemy->DETECTION_RADIUS);
+    radius.setOutlineColor(sf::Color::Red);
+    radius.setOutlineThickness(2);
+    radius.setFillColor(sf::Color::Transparent);
+    radius.setOrigin(btEnemy->DETECTION_RADIUS, btEnemy->DETECTION_RADIUS);
 
     sf::Clock clock;
 
@@ -48,7 +56,11 @@ int main() {
         }
 
         window.clear();
+
+        radius.setPosition(btEnemy->shape.getPosition());
+
         grid.draw(window);
+        window.draw(radius);
         window.draw(player.shape);
 
         for (const auto& enemy : enemies)

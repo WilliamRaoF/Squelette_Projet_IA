@@ -31,6 +31,12 @@ public:
     NodeState execute(Grid& grid, std::shared_ptr<Blackboard> blackboard, std::shared_ptr<Entity> entity) override;
 };
 
+class SearchNode : public ActionNode {
+public:
+    SearchNode() : ActionNode("Search") {}
+    NodeState execute(Grid& grid, std::shared_ptr<Blackboard> blackboard, std::shared_ptr<Entity> entity) override;
+};
+
 
 
 

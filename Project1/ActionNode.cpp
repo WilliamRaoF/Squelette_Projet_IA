@@ -94,7 +94,7 @@ NodeState ChaseNode::execute(Grid& grid, std::shared_ptr<Blackboard> blackboard,
     else
     {
         std::cout << "INVALID PATH\n";
-        return NodeState::FAILURE;
+        //return NodeState::FAILURE;
     }
 
     distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
@@ -104,5 +104,59 @@ NodeState ChaseNode::execute(Grid& grid, std::shared_ptr<Blackboard> blackboard,
         entity->velocity += direction * 1.25f;
     }
 
+    return NodeState::SUCCESS;
+}
+
+NodeState SearchNode::execute(Grid& grid, std::shared_ptr<Blackboard> blackboard, std::shared_ptr<Entity> entity)
+{
+    static float distance = 0.f;
+    static int cooldown = 0;
+
+    entity->shape.setFillColor(sf::Color::Yellow);
+
+    auto targetPosition = blackboard->getValue<sf::Vector2f>("GoTo");
+
+    sf::Vector2i targetGridPosition = (sf::Vector2i)targetPosition / CELL_SIZE;
+    sf::Vector2i entitytGridPosition = (sf::Vector2i)entity->shape.getPosition() / CELL_SIZE;
+
+    std::cout << "Action: " << m_actionName << "\t->\t{ " << targetGridPosition.x << ", " << targetGridPosition.y << " }" << std::endl;
+
+    auto path = entity->pathfinding.findPath(grid,
+        entitytGridPosition,
+        targetGridPosition);
+
+    sf::Vector2f direction = { 0, 0 };
+    if (!path.empty() && entitytGridPosition != targetGridPosition) {
+        direction = { ((float)path[1].x * CELL_SIZE + CELL_SIZE / 2.f) - entity->shape.getPosition().x,
+                      ((float)path[1].y * CELL_SIZE + CELL_SIZE / 2.f) - entity->shape.getPosition().y };
+    }
+    else
+    {
+        std::cout << "INVALID PATH\n";
+        blackboard->setValue("isSearching", false);
+        return NodeState::FAILURE;
+    }
+
+    distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+
+    if (!distance < 1.0f) {
+        direction /= distance;
+        entity->velocity += direction;
+    }
+    else
+    {
+        entity->velocity = { 0.f, 0.f };
+
+        if (cooldown > 10 * 60)
+        {
+            cooldown = 0;
+            blackboard->setValue("isSearching", false);
+            return NodeState::FAILURE;
+        }
+
+        cooldown++;
+    }
+
+    cooldown++;
     return NodeState::SUCCESS;
 }

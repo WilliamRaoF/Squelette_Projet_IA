@@ -18,16 +18,21 @@ void BTEnemy::update(float deltaTime, Grid& grid, Player& player)
 	velocity = { 0, 0 };
 
 	float distance = std::hypot(playerPos.x - pos.x, playerPos.y - pos.y);
+	auto blackboard = behavior->getBlackboard();
 
 	if (distance <= DETECTION_RADIUS)
 	{
-		behavior->getBlackboard()->setValue("isPlayerDetected", true);
+		blackboard->setValue("isPlayerDetected", true);
 
-		behavior->getBlackboard()->setValue("GoTo", playerPos);
+		blackboard->setValue("GoTo", playerPos);
 	}
 	else
 	{
-		behavior->getBlackboard()->setValue("isPlayerDetected", false);
+		if (blackboard->getValue<bool>("isPlayerDetected"))
+		{
+			blackboard->setValue("isSearching", true);
+		}
+		blackboard->setValue("isPlayerDetected", false);
 	}
 	behavior->executeRoot();
 
@@ -39,15 +44,29 @@ void BTEnemy::initBTree(Grid& grid)
 	behavior = std::make_shared<BTree>(grid, shared_from_this());
 
 	behavior->getBlackboard()->setValue("isPlayerDetected", false);
+	behavior->getBlackboard()->setValue("isSearching", false);
 	behavior->getBlackboard()->setValue("GoTo", sf::Vector2f{ 0, 0 });
 
-	auto plrDetect = std::make_unique<SequenceNode>();
+	auto plrFound = std::make_unique<SelectorNode>();
+	auto plrNotFound = std::make_unique<SelectorNode>();
+
+	auto plrChase = std::make_unique<SequenceNode>();
+	auto plrSearch = std::make_unique<SequenceNode>();
 	auto patrolling = std::make_unique<SequenceNode>();
 
-	plrDetect->addChild(std::make_unique<ConditionNode>("isPlayerDetected", true));
-	plrDetect->addChild(std::make_unique<ChaseNode>());
+	plrChase->addChild(std::make_unique<ConditionNode>("isPlayerDetected", true));
+	plrChase->addChild(std::make_unique<ChaseNode>());
+
+	plrSearch->addChild(std::make_unique<ConditionNode>("isSearching", true));
+	plrSearch->addChild(std::make_unique<SearchNode>());
+
 	patrolling->addChild(std::make_unique<PatrolNode>());
 
-	behavior->addChildToRoot(std::move(plrDetect));
-	behavior->addChildToRoot(std::move(patrolling));
+
+	plrFound->addChild(std::move(plrChase));
+	plrFound->addChild(std::move(plrSearch));
+	plrNotFound->addChild(std::move(patrolling));
+
+	behavior->addChildToRoot(std::move(plrFound));
+	behavior->addChildToRoot(std::move(plrNotFound));
 }
