@@ -1,9 +1,9 @@
 #include "ConditionNode.h"
 
-NodeState ConditionNode::execute()
+NodeState ConditionNode::execute(Grid& grid, std::shared_ptr<Blackboard> blackboard, std::shared_ptr<Entity> entity)
 {
     try {
-        bool blackboardValue = m_blackboard->getValue<bool>(m_key);
+        bool blackboardValue = blackboard->getValue<bool>(m_key);
 
         if (blackboardValue == m_expectedValue) 
         {

@@ -15,15 +15,17 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Jeu SFML - IA Ennemis");
     window.setFramerateLimit(60);
 
+    Grid grid;
+    grid.loadFromFile("map.txt");
+
     Player player(200, 400);
 
     std::vector<Enemy> enemies = { Enemy(100, 100), Enemy(700, 100) };
 
-    std::vector<BTEnemy> btenemies;
-    btenemies.push_back(BTEnemy(200, 200));
-
-    Grid grid;
-    grid.loadFromFile("map.txt");
+    std::vector<std::shared_ptr<BTEnemy>> btenemies;
+    auto btEnemy = std::make_shared<BTEnemy>(200, 200);
+    btEnemy->initBTree(grid);
+    btenemies.push_back(btEnemy);
 
     sf::Clock clock;
 
@@ -42,7 +44,7 @@ int main() {
             enemy.update(deltaTime, grid);
         }
         for (auto& btenemy : btenemies) {
-            btenemy.update(deltaTime, grid, player);
+            btenemy->update(deltaTime, grid, player);
         }
 
         window.clear();
@@ -53,7 +55,7 @@ int main() {
             window.draw(enemy.shape);
 
         for (const auto& btenemy : btenemies)
-            window.draw(btenemy.shape);
+            window.draw(btenemy->shape);
 
         window.display();
     }

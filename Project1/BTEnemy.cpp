@@ -2,25 +2,12 @@
 
 BTEnemy::BTEnemy(float x, float y) : Entity(x, y, sf::Color::Cyan)
 {
-	//setup tree
-
-	behavior.getBlackboard()->setValue("isPlayerDetected", false);
-	behavior.getBlackboard()->setValue("GoTo", sf::Vector2f{0, 0});
-
-	auto plrDetect = std::make_unique<SequenceNode>();
-	auto patrolling = std::make_unique<SequenceNode>();
-
-	plrDetect->addChild(std::make_unique<ConditionNode>(behavior.getBlackboard(), "isPlayerDetected", true));
-	plrDetect->addChild(std::make_unique<ChaseNode>(behavior.getBlackboard()));
-	patrolling->addChild(std::make_unique<PatrolNode>(behavior.getBlackboard()));
-
-	behavior.addChildToRoot(std::move(plrDetect));
-	behavior.addChildToRoot(std::move(patrolling));
+	shape.setOrigin(shape.getSize() / 2.f);
 }
 
 void BTEnemy::update(float deltaTime, Grid& grid)
 {
-	behavior.executeRoot();
+	behavior->executeRoot();
 }
 
 void BTEnemy::update(float deltaTime, Grid& grid, Player& player)
@@ -28,17 +15,39 @@ void BTEnemy::update(float deltaTime, Grid& grid, Player& player)
 	sf::Vector2f playerPos = player.shape.getPosition();
 	sf::Vector2f pos = shape.getPosition();
 
+	velocity = { 0, 0 };
+
 	float distance = std::hypot(playerPos.x - pos.x, playerPos.y - pos.y);
 
-	if (distance <= 150.f)
+	if (distance <= DETECTION_RADIUS)
 	{
-		behavior.getBlackboard()->setValue("isPlayerDetected", true);
+		behavior->getBlackboard()->setValue("isPlayerDetected", true);
 
-		behavior.getBlackboard()->setValue("GoTo", playerPos);
+		behavior->getBlackboard()->setValue("GoTo", playerPos);
 	}
 	else
 	{
-		behavior.getBlackboard()->setValue("isPlayerDetected", false);
+		behavior->getBlackboard()->setValue("isPlayerDetected", false);
 	}
-	behavior.executeRoot();
+	behavior->executeRoot();
+
+	shape.setPosition(pos + velocity * deltaTime * SPEED);
+}
+
+void BTEnemy::initBTree(Grid& grid)
+{
+	behavior = std::make_shared<BTree>(grid, shared_from_this());
+
+	behavior->getBlackboard()->setValue("isPlayerDetected", false);
+	behavior->getBlackboard()->setValue("GoTo", sf::Vector2f{ 0, 0 });
+
+	auto plrDetect = std::make_unique<SequenceNode>();
+	auto patrolling = std::make_unique<SequenceNode>();
+
+	plrDetect->addChild(std::make_unique<ConditionNode>("isPlayerDetected", true));
+	plrDetect->addChild(std::make_unique<ChaseNode>());
+	patrolling->addChild(std::make_unique<PatrolNode>());
+
+	behavior->addChildToRoot(std::move(plrDetect));
+	behavior->addChildToRoot(std::move(patrolling));
 }

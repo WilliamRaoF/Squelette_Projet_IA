@@ -10,7 +10,7 @@ class SequenceNode : public BTNode
 {
 public:
 	void addChild(std::unique_ptr<BTNode> child);
-	NodeState execute() override;
+	NodeState execute(Grid& grid, std::shared_ptr<Blackboard> blackboard, std::shared_ptr<Entity> entity) override;
 
 private:
 	std::vector<std::unique_ptr<BTNode>> m_children;

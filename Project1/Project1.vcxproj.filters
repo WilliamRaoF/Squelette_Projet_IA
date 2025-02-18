@@ -25,6 +25,12 @@
     <Filter Include="Fichiers sources\BehaviorTree\Nodes">
       <UniqueIdentifier>{b68d6db2-6d28-4aec-b54d-13a98df18eb1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Pathfinding">
+      <UniqueIdentifier>{80262fc5-2ef0-4392-b60b-9b19943e8884}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Pathfinding">
+      <UniqueIdentifier>{2ede3400-4e31-44d2-b878-6c98259f5689}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -69,6 +75,12 @@
     <ClCompile Include="BTEnemy.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="PFNode.cpp">
+      <Filter>Fichiers sources\Pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="Pathfinding.cpp">
+      <Filter>Fichiers sources\Pathfinding</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.hpp">
@@ -100,6 +112,12 @@
     </ClInclude>
     <ClInclude Include="Nodes.h">
       <Filter>Fichiers d%27en-tête\BehaviorTree\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="PFNode.h">
+      <Filter>Fichiers d%27en-tête\Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="Pathfinding.h">
+      <Filter>Fichiers d%27en-tête\Pathfinding</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

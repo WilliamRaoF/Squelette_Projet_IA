@@ -1,7 +1,7 @@
 #ifndef ACTION_NODE_H
 #define ACTION_NODE_H
 
-#include <SFML//Graphics.hpp>
+#include <SFML/System/Vector2.hpp>
 
 #include "BTNode.h"
 #include "Blackboard.h"
@@ -12,8 +12,8 @@
 class ActionNode : public BTNode {
 public:
     ActionNode();
-    ActionNode(const std::string& actionName, const std::shared_ptr<Blackboard>& blackboard);
-    NodeState execute() override;
+    ActionNode(const std::string& actionName);
+    NodeState execute(Grid& grid, std::shared_ptr<Blackboard> blackboard, std::shared_ptr<Entity> entity) override;
 protected:
     std::shared_ptr<Blackboard> m_blackboard;
     std::string m_actionName;
@@ -21,14 +21,14 @@ protected:
 
 class PatrolNode : public ActionNode {
 public:
-    PatrolNode(const std::shared_ptr<Blackboard>& blackboard) : ActionNode("Patrolling", blackboard) {}
-    //NodeState execute() override;
+    PatrolNode() : ActionNode("Patrolling") {}
+    NodeState execute(Grid & grid, std::shared_ptr<Blackboard> blackboard, std::shared_ptr<Entity> entity) override;
 };
 
 class ChaseNode : public ActionNode {
 public:
-    ChaseNode(const std::shared_ptr<Blackboard>& blackboard) : ActionNode("Chase", blackboard) {}
-    NodeState execute() override;
+    ChaseNode() : ActionNode("Chase") {}
+    NodeState execute(Grid& grid, std::shared_ptr<Blackboard> blackboard, std::shared_ptr<Entity> entity) override;
 };
 
 
