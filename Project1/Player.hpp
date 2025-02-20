@@ -6,7 +6,8 @@
 
 class Player : public Entity {
 public:
-    static constexpr float SPEED = 200.0f;
+    float SPEED = 150.f;
+    //void update(float deltaTime, Grid& grid) override;
     static constexpr int DAMAGE = 20;
     static constexpr float ATTACK_COOLDOWN = 0.5f;
     float attackTimer;

@@ -5,8 +5,8 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
-const int GRID_WIDTH = 20;
-const int GRID_HEIGHT = 15;
+const int GRID_WIDTH = 38;
+const int GRID_HEIGHT = 30;
 const int CELL_SIZE = 40;
 
 struct Cell {
@@ -21,7 +21,11 @@ public:
     void loadFromFile(const std::string& filename);
     void draw(sf::RenderWindow& window);
     Cell& getCell(int x, int y);
-private:
+
+    bool isWalkable(int x, int y) {
+        return cells[y][x].walkable;
+    }
+
     std::vector<std::vector<Cell>> cells;
 };
 
