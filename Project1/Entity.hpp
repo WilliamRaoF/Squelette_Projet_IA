@@ -18,7 +18,7 @@ public:
     Entity(float x, float y, sf::Color color, int hp);
     virtual void update(float deltaTime, Grid& grid, std::vector<Entity*> neededEntities) = 0;
     bool isAlive() const;
-    void takeDamage(int damage)
+    void takeDamage(int damage);
 };
 
 

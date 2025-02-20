@@ -19,7 +19,7 @@ public:
     std::shared_ptr<BTree> behavior = nullptr;
 
     BTEnemy(float x, float y);
-    void update(float deltaTime, Grid& grid) override;
+    void update(float deltaTime, Grid& grid, std::vector<Entity*> neededEntities) override;
     void update(float deltaTime, Grid& grid, Player& player);
 
     void initBTree(Grid& grid);

@@ -1,6 +1,6 @@
 #include "BTEnemy.h"
 
-BTEnemy::BTEnemy(float x, float y) : Entity(x, y, sf::Color::Cyan)
+BTEnemy::BTEnemy(float x, float y) : Entity(x, y, sf::Color::Cyan, 50)
 {
 	shape.setOrigin(shape.getSize() / 2.f);
 	//Raycaster raycast = Raycaster(100, 100, 1.0f, 1.0f);
@@ -19,7 +19,7 @@ BTEnemy::BTEnemy(float x, float y) : Entity(x, y, sf::Color::Cyan)
 	radiusVision.setOrigin(VISION_RADIUS, VISION_RADIUS);
 }
 
-void BTEnemy::update(float deltaTime, Grid& grid)
+void BTEnemy::update(float deltaTime, Grid& grid, std::vector<Entity*> neededEntities)
 {
 	behavior->executeRoot();
 }

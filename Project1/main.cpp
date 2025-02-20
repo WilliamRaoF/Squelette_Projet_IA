@@ -19,7 +19,6 @@ int main() {
     window.setFramerateLimit(60);
 
 
-    Player player(400, 400, 10);
     std::vector<Entity*> enemies;
 	  enemies.push_back(new Enemy(100, 100, 10));
 	  enemies.push_back(new Enemy(700, 100, 100));
@@ -27,10 +26,8 @@ int main() {
     Grid grid;
     grid.loadFromFile("map.txt");
 
-    Player player(200, 400);
+    Player player(200, 400, 10);
     player.shape.setOrigin(player.shape.getSize() / 2.f);
-
-    std::vector<Enemy> enemies = { Enemy(100, 100), Enemy(700, 100) };
 
     //*BEHAVIOR TREE ENEMY*\\ 
     std::vector<std::shared_ptr<BTEnemy>> btenemies;
@@ -79,5 +76,6 @@ int main() {
             }
         }
         window.display();
+    }
     return 0;
 }
