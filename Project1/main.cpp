@@ -8,15 +8,21 @@
 #include <vector>
 #include <ctime>
 
-
 const int WINDOW_WIDTH = 1480;
 const int WINDOW_HEIGHT = 880;
+
 
 int main() {
     srand(time(NULL));
 
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Jeu SFML - IA Ennemis");
     window.setFramerateLimit(60);
+
+
+    Player player(400, 400, 10);
+    std::vector<Entity*> enemies;
+	  enemies.push_back(new Enemy(100, 100, 10));
+	  enemies.push_back(new Enemy(700, 100, 100));
 
     Grid grid;
     grid.loadFromFile("map.txt");
@@ -47,9 +53,9 @@ int main() {
                 window.close();
         }
 
-        player.update(deltaTime, grid);
+        player.update(deltaTime, grid, enemies);
         for (auto& enemy : enemies) {
-            enemy.update(deltaTime, grid);
+            //enemy->update(deltaTime, grid);
         }
         for (auto& btenemy : btenemies) {
             btenemy->update(deltaTime, grid, player);
@@ -60,9 +66,6 @@ int main() {
         grid.draw(window);
         window.draw(player.shape);
 
-        for (const auto& enemy : enemies)
-            window.draw(enemy.shape);
-
         for (const auto& btenemy : btenemies)
         {
             window.draw(btenemy->radius);
@@ -70,8 +73,11 @@ int main() {
             window.draw(btenemy->shape);
         }
 
+        for (const auto& enemy : enemies) {
+            if (enemy->isAlive()) {
+                window.draw(enemy->shape);
+            }
+        }
         window.display();
-    }
     return 0;
 }
-

@@ -10,11 +10,16 @@ class Entity {
 public:
     sf::RectangleShape shape;
     sf::Vector2f velocity;
-
+    int health;
     Pathfinding pathfinding;
 
-    Entity(float x, float y, sf::Color color);
-    virtual void update(float deltaTime, Grid& grid) = 0;
+    //virtual void update(float deltaTime, Grid& grid) = 0;
+
+    Entity(float x, float y, sf::Color color, int hp);
+    virtual void update(float deltaTime, Grid& grid, std::vector<Entity*> neededEntities) = 0;
+    bool isAlive() const;
+    void takeDamage(int damage)
 };
+
 
 #endif // ENTITY_HPP
