@@ -151,7 +151,6 @@
     <ClCompile Include="EnemyGOAP.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="FleeAction.cpp" />
-    <ClCompile Include="GOAPAgent.cpp" />
     <ClCompile Include="GOAPPlanner.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="HuntAction.cpp" />
@@ -168,7 +167,6 @@
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="FleeAction.h" />
     <ClInclude Include="Goal.h" />
-    <ClInclude Include="GOAPAgent.h" />
     <ClInclude Include="GOAPPlanner.h" />
     <ClInclude Include="Grid.hpp" />
     <ClInclude Include="HuntAction.h" />

@@ -4,21 +4,26 @@
 #include <vector>
 #include <string>
 
-#include "EnemyGOAP.h"
+
 
 using namespace std;
 
 class State {
 public:
-    bool isPatrolling = false; 
+    bool isPatrolling = true; 
     bool isHunting = false;    
     bool isSearching = false;  
     bool shouldFlee = false;    
+    int healthGOAP = 100;
+    Vector2f positionGOAP;
 
     bool getPatrolling() const { return isPatrolling; }
     bool getHunting() const { return isHunting; }
     bool getSearching() const { return isSearching; }
     bool getShouldFlee() const { return shouldFlee; }
+
+    int getHealthstate() const { return healthGOAP; }
+    Vector2f getPosState() const { return positionGOAP; }
 
 
     void setPatrolling(bool p) { isPatrolling = p; }

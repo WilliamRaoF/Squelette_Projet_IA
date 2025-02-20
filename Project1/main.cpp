@@ -3,8 +3,8 @@
 
 #include "Player.hpp"
 #include "EnemyFSM.hpp"
+#include "EnemyGOAP.h"
 #include "Grid.hpp"
-#include "GOAPAgent.h"
 #include "State.h"
 
 
@@ -26,7 +26,7 @@ int main() {
 
     enemies.push_back(new EnemyGOAP(player, { 100, 100 }, 50.0f, 100));  // Exemple d'ennemi
     enemies.push_back(new EnemyGOAP(player, { 700, 100 }, 50.0f, 100));
-
+    EnemyGOAP test(player, { 500,500 }, 50.0f, 10);
     Grid grid;
     grid.loadFromFile("map.txt");
 
@@ -42,14 +42,17 @@ int main() {
                 window.close();
         }
 
-
+      
         enemies[0]->update(deltaTime, grid, players);
 
         player.update(deltaTime, grid, enemies);
-
+        //test.flee(player.getpos());
+        //test.hunt(player.getpos());
+        //test.PerformActions(test.state);
         window.clear();
         grid.draw(window);
         window.draw(player.shape);
+        window.draw(test.shape);
         for (const auto& enemy : enemies) {
             if (enemy->isAlive()) {
                 window.draw(enemy->shape);

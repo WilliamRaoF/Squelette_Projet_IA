@@ -13,10 +13,6 @@ vector<unique_ptr<Action>> GOAPPlanner::Plan(const State& initialState, Goal goa
 	{
 		plan.push_back(make_unique<HuntAction>());
 	}
-	else if (goal == Goal::SEARCH)
-	{
-		plan.push_back(make_unique <SearchAction>());
-	}
 	else if (goal == Goal::FLEE)
 	{
 		plan.push_back(make_unique <FleeAction>());
