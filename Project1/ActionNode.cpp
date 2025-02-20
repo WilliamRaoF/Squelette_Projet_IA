@@ -72,7 +72,7 @@ NodeState PatrolNode::execute(Grid& grid, std::shared_ptr<Blackboard> blackboard
 
     if (!distance < 1.0f) {
         direction /= distance;
-        entity->velocity += direction * .75f;
+        entity->velocity += direction * speedMultiplicator;
     }
     else
     {
@@ -123,7 +123,7 @@ NodeState ChaseNode::execute(Grid& grid, std::shared_ptr<Blackboard> blackboard,
 
     if (!distance < 1.0f) {
         direction /= distance;
-        entity->velocity += direction * 1.25f;
+        entity->velocity += direction * speedMultiplicator;
     }
 
     return NodeState::SUCCESS;
@@ -173,7 +173,7 @@ NodeState SearchNode::execute(Grid& grid, std::shared_ptr<Blackboard> blackboard
 
     if (!distance < 1.0f) {
         direction /= distance;
-        entity->velocity += direction;
+        entity->velocity += direction * speedMultiplicator;
     }
     else
     {

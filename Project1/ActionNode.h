@@ -22,12 +22,16 @@ protected:
 class PatrolNode : public ActionNode {
 public:
     int stopTime = 1;
+    float speedMultiplicator = .5f;
+
     PatrolNode() : ActionNode("Patrolling") {}
     NodeState execute(Grid & grid, std::shared_ptr<Blackboard> blackboard, std::shared_ptr<Entity> entity) override;
 };
 
 class ChaseNode : public ActionNode {
 public:
+    float speedMultiplicator = 1.25f;
+
     ChaseNode() : ActionNode("Chase") {}
     NodeState execute(Grid& grid, std::shared_ptr<Blackboard> blackboard, std::shared_ptr<Entity> entity) override;
 };
@@ -35,6 +39,7 @@ public:
 class SearchNode : public ActionNode {
 public:
     int stopTime = 3;
+    float speedMultiplicator = 1.f;
 
     SearchNode() : ActionNode("Search") {}
     NodeState execute(Grid& grid, std::shared_ptr<Blackboard> blackboard, std::shared_ptr<Entity> entity) override;
