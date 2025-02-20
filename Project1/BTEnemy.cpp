@@ -3,6 +3,20 @@
 BTEnemy::BTEnemy(float x, float y) : Entity(x, y, sf::Color::Cyan)
 {
 	shape.setOrigin(shape.getSize() / 2.f);
+	//Raycaster raycast = Raycaster(100, 100, 1.0f, 1.0f);
+	//raycaster = raycast;
+
+	radius.setRadius(DETECTION_RADIUS);
+	radius.setOutlineColor(sf::Color::Green);
+	radius.setOutlineThickness(2);
+	radius.setFillColor(sf::Color(0, 255, 0, 20));
+	radius.setOrigin(DETECTION_RADIUS, DETECTION_RADIUS);
+
+	radiusVision.setRadius(VISION_RADIUS);
+	radiusVision.setOutlineColor(sf::Color::Red);
+	radiusVision.setOutlineThickness(2);
+	radiusVision.setFillColor(sf::Color(255, 0, 0, 20));
+	radiusVision.setOrigin(VISION_RADIUS, VISION_RADIUS);
 }
 
 void BTEnemy::update(float deltaTime, Grid& grid)
@@ -14,6 +28,9 @@ void BTEnemy::update(float deltaTime, Grid& grid, Player& player)
 {
 	sf::Vector2f playerPos = player.shape.getPosition();
 	sf::Vector2f pos = shape.getPosition();
+
+	radius.setPosition(shape.getPosition());
+	radiusVision.setPosition(shape.getPosition());
 
 	velocity = { 0, 0 };
 
@@ -59,7 +76,7 @@ void BTEnemy::update(float deltaTime, Grid& grid, Player& player)
 		
 		blackboard->setValue("isPlayerDetected", false);
 	}
-	
+
 	//execute tree
 	behavior->executeRoot();
 	shape.setPosition(pos + velocity * deltaTime * SPEED);

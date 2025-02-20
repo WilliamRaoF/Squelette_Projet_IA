@@ -22,6 +22,10 @@ public:
     void draw(sf::RenderWindow& window);
     Cell& getCell(int x, int y);
 
+    bool isWalkable(int x, int y) {
+        return cells[y][x].walkable;
+    }
+
     std::vector<std::vector<Cell>> cells;
 };
 

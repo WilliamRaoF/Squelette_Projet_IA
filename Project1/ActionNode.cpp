@@ -1,4 +1,5 @@
 #include "ActionNode.h"
+#include <random>
 
 ActionNode::ActionNode()
 		  : m_actionName("Unkown") {
@@ -28,9 +29,14 @@ NodeState PatrolNode::execute(Grid& grid, std::shared_ptr<Blackboard> blackboard
 
     entity->shape.setFillColor(sf::Color::Cyan);
 
+    std::random_device randomDevice;
+    std::mt19937 seed(randomDevice());
+    std::uniform_int_distribution<> randX(0, GRID_WIDTH);
+    std::uniform_int_distribution<> randY(0, GRID_HEIGHT);
+
     sf::Vector2f targetPosition = {
-        static_cast<float>(rand() % GRID_WIDTH) * CELL_SIZE,
-        static_cast<float>(rand() % GRID_HEIGHT) * CELL_SIZE
+        static_cast<float>(randX(seed) % GRID_WIDTH)* CELL_SIZE,
+        static_cast<float>(randY(seed) % GRID_HEIGHT) * CELL_SIZE
     };
 
     if (goTo == sf::Vector2f{-1.f, -1.f} || cooldown >= 60*20)

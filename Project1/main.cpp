@@ -31,18 +31,9 @@ int main() {
     auto btEnemy = std::make_shared<BTEnemy>(200, 200);
     btEnemy->initBTree(grid);
     btenemies.push_back(btEnemy);
-
-    sf::CircleShape radius(btEnemy->DETECTION_RADIUS);
-    radius.setOutlineColor(sf::Color::Green);
-    radius.setOutlineThickness(2);
-    radius.setFillColor(sf::Color(0,255,0,15));
-    radius.setOrigin(btEnemy->DETECTION_RADIUS, btEnemy->DETECTION_RADIUS);
-
-    sf::CircleShape radiusVision(btEnemy->VISION_RADIUS);
-    radiusVision.setOutlineColor(sf::Color::Red);
-    radiusVision.setOutlineThickness(2);
-    radiusVision.setFillColor(sf::Color(255, 0, 0, 15));
-    radiusVision.setOrigin(btEnemy->VISION_RADIUS, btEnemy->VISION_RADIUS);
+    auto btEnemy2 = std::make_shared<BTEnemy>(1000, 550);
+    btEnemy2->initBTree(grid);
+    btenemies.push_back(btEnemy2);
 
     sf::Clock clock;
 
@@ -66,19 +57,18 @@ int main() {
 
         window.clear();
 
-        radius.setPosition(btEnemy->shape.getPosition());
-        radiusVision.setPosition(btEnemy->shape.getPosition());
-
         grid.draw(window);
-        window.draw(radius);
-        window.draw(radiusVision);
         window.draw(player.shape);
 
         for (const auto& enemy : enemies)
             window.draw(enemy.shape);
 
         for (const auto& btenemy : btenemies)
+        {
+            window.draw(btenemy->radius);
+            window.draw(btenemy->radiusVision);
             window.draw(btenemy->shape);
+        }
 
         window.display();
     }
