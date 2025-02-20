@@ -6,10 +6,16 @@ Player::Player(float x, float y) : Entity(x, y, sf::Color::Blue) {}
 void Player::update(float deltaTime, Grid& grid) {
     sf::Vector2f movement(0.f, 0.f);
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) movement.y -= SPEED * deltaTime;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) { SPEED = 250.f; }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) { SPEED = 75.f; }
+    if (!sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && !sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) { SPEED = 150.f; }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) { movement.y -= SPEED * deltaTime; }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) movement.y += SPEED * deltaTime;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) movement.x -= SPEED * deltaTime;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) movement.x += SPEED * deltaTime;
+
+    if (movement == sf::Vector2f{ 0.f, 0.f }) SPEED = 0.f; //i did this to make it so the enemy won't hear the player if they stand still
 
     sf::Vector2f newPosition = shape.getPosition() + movement;
     sf::Vector2f originOffset = shape.getOrigin();

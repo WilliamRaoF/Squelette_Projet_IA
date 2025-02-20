@@ -33,10 +33,16 @@ int main() {
     btenemies.push_back(btEnemy);
 
     sf::CircleShape radius(btEnemy->DETECTION_RADIUS);
-    radius.setOutlineColor(sf::Color::Red);
+    radius.setOutlineColor(sf::Color::Green);
     radius.setOutlineThickness(2);
-    radius.setFillColor(sf::Color::Transparent);
+    radius.setFillColor(sf::Color(0,255,0,15));
     radius.setOrigin(btEnemy->DETECTION_RADIUS, btEnemy->DETECTION_RADIUS);
+
+    sf::CircleShape radiusVision(btEnemy->VISION_RADIUS);
+    radiusVision.setOutlineColor(sf::Color::Red);
+    radiusVision.setOutlineThickness(2);
+    radiusVision.setFillColor(sf::Color(255, 0, 0, 15));
+    radiusVision.setOrigin(btEnemy->VISION_RADIUS, btEnemy->VISION_RADIUS);
 
     sf::Clock clock;
 
@@ -61,9 +67,11 @@ int main() {
         window.clear();
 
         radius.setPosition(btEnemy->shape.getPosition());
+        radiusVision.setPosition(btEnemy->shape.getPosition());
 
         grid.draw(window);
         window.draw(radius);
+        window.draw(radiusVision);
         window.draw(player.shape);
 
         for (const auto& enemy : enemies)

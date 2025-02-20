@@ -20,6 +20,12 @@ NodeState PatrolNode::execute(Grid& grid, std::shared_ptr<Blackboard> blackboard
     static int cooldown = 0;
     static int cooldownWhenArrived = 0;
 
+    if (blackboard->getValue<bool>("isOnSearchCooldown") == true)
+    {
+        blackboard->setValue("isSearching", true);
+        NodeState::FAILURE;
+    }
+
     entity->shape.setFillColor(sf::Color::Cyan);
 
     sf::Vector2f targetPosition = {
@@ -132,6 +138,8 @@ NodeState SearchNode::execute(Grid& grid, std::shared_ptr<Blackboard> blackboard
 
     auto targetPosition = blackboard->getValue<sf::Vector2f>("GoTo");
 
+    blackboard->setValue("isOnSearchCooldown", true);
+
     sf::Vector2i targetGridPosition = (sf::Vector2i)targetPosition / CELL_SIZE;
     sf::Vector2i entitytGridPosition = (sf::Vector2i)entity->shape.getPosition() / CELL_SIZE;
 
@@ -153,6 +161,7 @@ NodeState SearchNode::execute(Grid& grid, std::shared_ptr<Blackboard> blackboard
         if (cooldown > stopTime * 60)
         {
             cooldown = 0;
+            blackboard->setValue("isOnSearchCooldown", false);
             blackboard->setValue("isSearching", false);
             return NodeState::FAILURE;
         }
@@ -173,6 +182,7 @@ NodeState SearchNode::execute(Grid& grid, std::shared_ptr<Blackboard> blackboard
         if (cooldown > 25 * 60)
         {
             cooldown = 0;
+            blackboard->setValue("isOnSearchCooldown", false);
             blackboard->setValue("isSearching", false);
             return NodeState::FAILURE;
         }

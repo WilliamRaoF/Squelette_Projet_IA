@@ -20,22 +20,48 @@ void BTEnemy::update(float deltaTime, Grid& grid, Player& player)
 	float distance = std::hypot(playerPos.x - pos.x, playerPos.y - pos.y);
 	auto blackboard = behavior->getBlackboard();
 
+
 	if (distance <= DETECTION_RADIUS)
 	{
-		blackboard->setValue("isPlayerDetected", true);
+		if (distance <= VISION_RADIUS)
+		{
+			blackboard->setValue("isPlayerDetected", true);
+			blackboard->setValue("GoTo", playerPos);
+		}
+		else
+		{
+			if (player.SPEED >= 100.f)
+			{
+				blackboard->setValue("GoTo", playerPos);
+				blackboard->setValue("isSearching", true);
+			}
+			else
+			{
+				if (blackboard->getValue<bool>("isOnSearchCooldown"))
+				{
+					blackboard->setValue("isSearching", true);
+				}
+				else
+				{
+					blackboard->setValue("isSearching", false);
+				}
+			}
 
-		blackboard->setValue("GoTo", playerPos);
+			blackboard->setValue("isPlayerDetected", false);
+		}
 	}
 	else
 	{
-		if (blackboard->getValue<bool>("isPlayerDetected"))
+		if (blackboard->getValue<bool>("isOnSearchCooldown"))
 		{
 			blackboard->setValue("isSearching", true);
 		}
+		
 		blackboard->setValue("isPlayerDetected", false);
 	}
+	
+	//execute tree
 	behavior->executeRoot();
-
 	shape.setPosition(pos + velocity * deltaTime * SPEED);
 }
 
@@ -44,7 +70,11 @@ void BTEnemy::initBTree(Grid& grid)
 	behavior = std::make_shared<BTree>(grid, shared_from_this());
 
 	behavior->getBlackboard()->setValue("isPlayerDetected", false);
+
 	behavior->getBlackboard()->setValue("isSearching", false);
+	behavior->getBlackboard()->setValue("isOnSearchCooldown", false);
+
+
 	behavior->getBlackboard()->setValue("GoTo", sf::Vector2f{ 0, 0 });
 
 	auto plrFound = std::make_unique<SelectorNode>();
