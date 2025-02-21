@@ -7,9 +7,8 @@
 
 class HuntAction : public Action {
 private: 
-	EnemyGOAP* enemyGoap;
 	Player* player;
 public:
 	bool CanExecute(const State& state) override;
-	void Execute(State& state) override;
+	void Execute(EnemyGOAP& enemy, Player& player) override;
 };

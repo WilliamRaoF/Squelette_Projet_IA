@@ -157,7 +157,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PatrolAction.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="SearchAction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Action.h" />
@@ -172,7 +171,6 @@
     <ClInclude Include="HuntAction.h" />
     <ClInclude Include="PatrolAction.h" />
     <ClInclude Include="Player.hpp" />
-    <ClInclude Include="SearchAction.h" />
     <ClInclude Include="State.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

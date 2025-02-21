@@ -6,9 +6,7 @@
 #include "EnemyGOAP.h"
 
 class PatrolAction : public Action {
-private: 
-	EnemyGOAP* enemyGoap;
 public:
 	bool CanExecute(const State& state) override;
-	void Execute(State& state) override;
+	void Execute(EnemyGOAP& enemy, Player& player) override;
 };

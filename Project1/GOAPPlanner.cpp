@@ -1,7 +1,7 @@
 #include "GOAPPlanner.h"
 #include "PatrolAction.h"
 #include "HuntAction.h"
-#include "SearchAction.h"
+//#include "SearchAction.h"
 #include "FleeAction.h"
 
 vector<unique_ptr<Action>> GOAPPlanner::Plan(const State& initialState, Goal goal) {

@@ -49,6 +49,7 @@ int main() {
         //test.flee(player.getpos());
         //test.hunt(player.getpos());
         //test.PerformActions(test.state);
+        test.updateState(test.getState(), test);
         window.clear();
         grid.draw(window);
         window.draw(player.shape);

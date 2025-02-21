@@ -6,7 +6,7 @@ Entity::Entity(sf::Vector2f pos, sf::Color color, int hp) : health(hp) {
     shape.setFillColor(color);
 }
 
-sf::RectangleShape Entity::getshape()
+sf::RectangleShape& Entity::getshape()
 {
     return shape;
 }
